@@ -1,6 +1,4 @@
 import React from 'react'
-import DuckImage from '../assets/Duck.jpg'
-import classes from './HomeView.scss'
 import { Button, Header, Image, Modal } from 'semantic-ui-react'
 
 const ModalHeader = Modal.Header;
@@ -27,20 +25,16 @@ export const HomeView = () => (
       <button className="ui inverted black button">Black</button>
     </div>
     <Modal trigger={<Button>Show Modal</Button>}>
-    <ModalHeader>Select a Photo</ModalHeader>
-    <ModalContent image>
-      <Image wrapped size='medium' src='http://semantic-ui.com/images/avatar2/large/rachel.png' />
-      <ModalDescription>
-        <Header>Default Profile Image</Header>
-        <p>We've found the following gravatar image associated with your e-mail address.</p>
-        <p>Is it okay to use this photo?</p>
-      </ModalDescription>
-    </ModalContent>
-  </Modal>
-    <img
-      alt='This is a duck, because Redux!'
-      className={classes.duck}
-      src={DuckImage} />
+      <ModalHeader>Select a Photo</ModalHeader>
+      <ModalContent image>
+        <Image wrapped size='medium' src='http://semantic-ui.com/images/avatar2/large/rachel.png' />
+        <ModalDescription>
+          <Header>Default Profile Image</Header>
+          <p>We've found the following gravatar image associated with your e-mail address.</p>
+          <p>Is it okay to use this photo?</p>
+        </ModalDescription>
+      </ModalContent>
+    </Modal>
   </div>
 )
 
