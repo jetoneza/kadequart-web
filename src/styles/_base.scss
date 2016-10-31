@@ -1,5 +1,5 @@
 .core-layout {
   .main-content {
-    margin-top: 7em;
+    @import "./components/login.scss";
   }
 }
