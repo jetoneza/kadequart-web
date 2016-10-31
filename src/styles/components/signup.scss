@@ -1,0 +1,28 @@
+.signup-page {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  background: #1C6BA0;
+  background: -moz-radial-gradient(top, ellipse cover, #1C6BA0 11%, #0f3e5e 99%, #0f3e5e 100%);
+  background: -webkit-gradient(radial, top center, 0, center center, 100%, color-stop(11%, #1C6BA0), color-stop(99%, #0f3e5e), color-stop(100%, #0f3e5e));
+  background: -webkit-radial-gradient(top, ellipse cover, #1C6BA0 11%, #0f3e5e 99%, #0f3e5e 100%);
+  background: -o-radial-gradient(top, ellipse cover, #1C6BA0 11%, #0f3e5e 99%, #0f3e5e 100%);
+  background: -ms-radial-gradient(top, ellipse cover, #1C6BA0 11%, #0f3e5e 99%, #0f3e5e 100%);
+  background: radial-gradient(ellipse at top, #1C6BA0 11%, #0f3e5e 99%, #0f3e5e 100%);
+  .form-wrapper {
+    margin: auto;
+    .submit.button {
+      text-transform: uppercase;
+    }
+    .login-link {
+      padding: 0;
+      display: flex;
+      a {
+        margin: auto 0;
+      }
+    }
+  }
+}

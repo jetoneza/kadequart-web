@@ -9,7 +9,7 @@ class Login extends React.Component {
           <form className="ui small form">
             <div className="field">
               <div className="ui right icon input">
-                <i className="user icon"></i>
+                <i className="spy icon"></i>
                 <input type="text" name="username" placeholder="Username" />
               </div>
             </div>
