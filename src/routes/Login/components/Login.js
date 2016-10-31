@@ -21,7 +21,7 @@ class Login extends React.Component {
             </div>
             <div className="ui stackable grid">
               <div className="nine wide column">
-                <div className="ui small blue submit button">Log In</div>
+                <Link to="/dashboard" className="ui small blue submit button">Log In</Link>
               </div>
               <div className="seven wide column signup-link">
                 <Link to="/signup">Sign up here.</Link>

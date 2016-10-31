@@ -2,15 +2,14 @@ import React from 'react'
 import { Link } from 'react-router'
 
 export const Header = () => (
-  <div className="ui fixed inverted menu">
+  <div className="ui secondary fixed menu inverted">
     <div className="ui container">
       <a href="#" className="header item">
         Kadequart
       </a>
-      <Link to="/" className="item">Home</Link>
-      <Link to="/dashboard" className="item">Dashboard</Link>
-      <Link to="/login" className="item">Log In</Link>
-      <Link to="/signup" className="item">Sign Up</Link>
+      <div className="right menu">
+        <Link to="/" className="ui item">Logout</Link>
+      </div>
     </div>
   </div>
 )

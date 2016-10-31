@@ -1,0 +1,36 @@
+.dashboard-page {
+  padding-bottom: 100px;
+  .hero-section {
+    margin-bottom: 20px;
+    height: 100vh;
+    padding-top: 7em;
+    position: relative;
+    background: #1C6BA0;
+    background: -moz-radial-gradient(top, ellipse cover, #1C6BA0 11%, #0f3e5e 99%, #0f3e5e 100%);
+    background: -webkit-gradient(radial, top center, 0, center center, 100%, color-stop(11%, #1C6BA0), color-stop(99%, #0f3e5e), color-stop(100%, #0f3e5e));
+    background: -webkit-radial-gradient(top, ellipse cover, #1C6BA0 11%, #0f3e5e 99%, #0f3e5e 100%);
+    background: -o-radial-gradient(top, ellipse cover, #1C6BA0 11%, #0f3e5e 99%, #0f3e5e 100%);
+    background: -ms-radial-gradient(top, ellipse cover, #1C6BA0 11%, #0f3e5e 99%, #0f3e5e 100%);
+    background: radial-gradient(ellipse at top, #1C6BA0 11%, #0f3e5e 99%, #0f3e5e 100%);
+    .statistic-info {
+      margin-top: 50px;
+    }
+    .graph {
+      margin-top: 40px;
+      padding-bottom: 10px;
+      position: absolute;
+      right: 0;
+      left: 0;
+      bottom: 0;
+    }
+  }
+  .statistics-section {
+    margin: 30px 0;
+    .actions {
+      display: flex;
+      .add-button {
+        text-transform: uppercase;
+      }
+    }
+  }
+}
