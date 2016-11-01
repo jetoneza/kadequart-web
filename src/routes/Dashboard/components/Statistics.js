@@ -1,9 +1,17 @@
 import React from 'react';
+import AddTransactionModal from './AddTransactionModal';
 
 class Statistics extends React.Component {
+
+  handleAddClick = () => {
+    const { addTransactionModal } = this.refs;
+    addTransactionModal.open();
+  }
+
   render() {
     return (
       <div className="ui stackable grid statistics-section">
+        <AddTransactionModal ref="addTransactionModal" />
         <div className="four wide column center aligned">
           <div className="ui green statistic">
             <div className="value">
@@ -35,7 +43,7 @@ class Statistics extends React.Component {
           </div>
         </div>
         <div className="four wide column center aligned actions">
-          <button className="ui massive blue fluid button add-button">
+          <button className="ui massive blue fluid button add-button" onClick={this.handleAddClick}>
             <i className="plus icon"></i> Add New
           </button>
         </div>
