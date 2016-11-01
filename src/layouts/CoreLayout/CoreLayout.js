@@ -4,7 +4,7 @@ import 'styles/core.scss'
 
 export const CoreLayout = ({ children, location }) => (
   <div className='core-layout'>
-    { (location.pathname == '/login' || location.pathname == '/signup') ? null : <Header /> }
+    <Header location={location}/>
     <div className="main-content">
       {children}
     </div>

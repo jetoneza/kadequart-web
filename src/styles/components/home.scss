@@ -1,0 +1,36 @@
+.home-page {
+  height: 100vh;
+  background: #1C6BA0;
+  background: -moz-radial-gradient(top, ellipse cover, #1C6BA0 11%, #0f3e5e 99%, #0f3e5e 100%);
+  background: -webkit-gradient(radial, top center, 0, center center, 100%, color-stop(11%, #1C6BA0), color-stop(99%, #0f3e5e), color-stop(100%, #0f3e5e));
+  background: -webkit-radial-gradient(top, ellipse cover, #1C6BA0 11%, #0f3e5e 99%, #0f3e5e 100%);
+  background: -o-radial-gradient(top, ellipse cover, #1C6BA0 11%, #0f3e5e 99%, #0f3e5e 100%);
+  background: -ms-radial-gradient(top, ellipse cover, #1C6BA0 11%, #0f3e5e 99%, #0f3e5e 100%);
+  background: radial-gradient(ellipse at top, #1C6BA0 11%, #0f3e5e 99%, #0f3e5e 100%);
+  display: flex;
+  .introduction {
+    position: relative;
+    clear: both;
+    display: block;
+    text-align: center;
+    margin: auto;
+    h1 {
+      font-size: 3em;
+      line-height: 1.2;
+      margin: 0;
+      padding-bottom: 0px;
+      text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+      .library {
+        display: block;
+        font-size: 1.75em;
+        font-weight: bold;
+      }
+      .tagline {
+        font-size: 0.75em;
+      }
+    }
+    .button {
+      text-transform: uppercase;
+    }
+  }
+}

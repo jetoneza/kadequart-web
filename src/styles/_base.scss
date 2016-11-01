@@ -1,7 +1,11 @@
 .core-layout {
+  .main-header {
+    padding-top: 10px;
+  }
   .main-content {
     @import "./components/login.scss";
     @import "./components/signup.scss";
     @import "./components/dashboard.scss";
+    @import "./components/home.scss";
   }
 }
