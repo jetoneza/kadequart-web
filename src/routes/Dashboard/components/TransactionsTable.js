@@ -10,6 +10,12 @@ class TransactionsTable extends React.Component {
     transactionModal.open()
   }
 
+  handleDeleteClick = (transaction) => {
+    const { confirmDeleteModal } = this.refs;
+    confirmDeleteModal.setTransaction(transaction);
+    confirmDeleteModal.open()
+  }
+
   render() {
     const data = [
       {
@@ -62,6 +68,7 @@ class TransactionsTable extends React.Component {
                   <td>{item.createdAt}</td>
                   <td className="actions">
                     <button className="ui blue compact icon button" onClick={e => this.handleEditClick(item)}><i className="edit icon"></i></button>
+                    <button className="ui red compact icon button" onClick={e => this.handleDeleteClick(item)}><i className="trash icon"></i></button>
                   </td>
                 </tr>
               )
