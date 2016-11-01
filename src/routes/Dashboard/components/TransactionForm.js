@@ -1,12 +1,28 @@
 import React from 'react';
 
-class AddTransactionForm extends React.Component {
+class TransactionForm extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
+    this.defaultState = {
       type: '',
       amount: '',
+      hasTransaction: false,
+    }
+
+    this.state = this.defaultState;
+  }
+
+  componentDidMount() {
+    const { transaction } = this.props;
+    if(transaction) {
+      this.setState({
+        type: transaction.type,
+        amount: transaction.amount,
+        hasTransaction: true,
+      });
+    } else {
+      this.setState(this.defaultState);
     }
   }
 
@@ -22,6 +38,10 @@ class AddTransactionForm extends React.Component {
     const data = {
       type,
       amount,
+    }
+
+    if(this.state.hasTransaction) {
+      data['id'] = this.props.transaction.id;
     }
 
     // TODO: handle submit
@@ -54,4 +74,4 @@ class AddTransactionForm extends React.Component {
   }
 }
 
-export default AddTransactionForm;
+export default TransactionForm;

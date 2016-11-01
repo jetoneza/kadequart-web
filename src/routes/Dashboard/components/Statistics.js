@@ -1,17 +1,17 @@
 import React from 'react';
-import AddTransactionModal from './AddTransactionModal';
+import TransactionModal from './TransactionModal';
 
 class Statistics extends React.Component {
 
   handleAddClick = () => {
-    const { addTransactionModal } = this.refs;
-    addTransactionModal.open();
+    const { transactionModal } = this.refs;
+    transactionModal.open();
   }
 
   render() {
     return (
       <div className="ui stackable grid statistics-section">
-        <AddTransactionModal ref="addTransactionModal" />
+        <TransactionModal ref="transactionModal" />
         <div className="four wide column center aligned">
           <div className="ui green statistic">
             <div className="value">

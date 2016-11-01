@@ -1,18 +1,23 @@
 import React from 'react';
 import { Modal } from 'semantic-ui-react';
-import AddTransactionForm from './AddTransactionForm';
+import TransactionForm from './TransactionForm';
 
 const ModalHeader = Modal.Header;
 const ModalContent = Modal.Content;
-const ModalActions = Modal.Actions;
 
-class AddTransactionModal extends React.Component {
+class TransactionModal extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
       open: false,
     }
+
+    this.transaction = null;
+  }
+
+  setTransaction = (transaction) => {
+    this.transaction = transaction;
   }
 
   open = () => {
@@ -29,14 +34,14 @@ class AddTransactionModal extends React.Component {
     return (
       <Modal size="small" open={open} onClose={this.close}>
         <ModalHeader>
-          Add New Transaction
+          {!this.transaction ? 'Add New' : 'Edit'} Transaction
         </ModalHeader>
         <ModalContent>
-          <AddTransactionForm closeModal={this.close}/>
+          <TransactionForm closeModal={this.close} transaction={this.transaction}/>
         </ModalContent>
       </Modal>
     );
   }
 }
 
-export default AddTransactionModal;
+export default TransactionModal;
