@@ -1,10 +1,11 @@
+import { UserIsAuthenticated } from 'utils/authWrapper';
+import DashboardContainer from './containers/DashboardContainer';
+
 export default (store) => ({
   path: 'dashboard',
-  getComponent (nextState, cb) {
-    require.ensure([], (require) => {
-      const Dashboard = require('./containers/DashboardContainer').default
-
-      cb(null, Dashboard)
-    }, 'dashboard')
+  getComponent(nextState, cb) {
+    require.ensure([], require => {
+      cb(null, UserIsAuthenticated(DashboardContainer));
+    }, 'dashboard');
   },
 })

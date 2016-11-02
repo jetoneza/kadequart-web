@@ -84,8 +84,6 @@ export function logout() {
       type: LOGOUT_SUCCESS,
     });
     localStorage.removeItem('reduxPersist:auth');
-    // Force redirection
-    //window.location = '/login';
   };
 }
 
