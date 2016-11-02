@@ -2,38 +2,60 @@ import React from 'react';
 import { Link } from 'react-router';
 
 class Signup extends React.Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      username: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+    }
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+
+    this.props.signup(this.state);
+  }
+
+  onChange = (e) => {
+    this.setState({[e.target.name]: e.target.value});
+  }
+
   render() {
     return (
       <div className="signup-page">
         <div className="ui raised wide segment form-wrapper">
-          <form className="ui small form">
+          <form className="ui small form" onSubmit={this.handleSubmit}>
             <div className="field">
               <div className="ui right icon input">
                 <i className="spy icon"></i>
-                <input type="text" name="username" placeholder="Username" />
+                <input type="text" name="username" placeholder="Username" value={this.state.username} onChange={this.onChange}/>
               </div>
             </div>
             <div className="field">
               <div className="ui right icon input">
                 <i className="mail icon"></i>
-                <input type="email" name="email" placeholder="Email" />
+                <input type="email" name="email" placeholder="Email" value={this.state.email} onChange={this.onChange}/>
               </div>
             </div>
             <div className="field">
               <div className="ui right icon input">
                 <i className="lock icon"></i>
-                <input type="password" name="password" placeholder="Password" />
+                <input type="password" name="password" placeholder="Password" value={this.state.password} onChange={this.onChange}/>
               </div>
             </div>
             <div className="field">
               <div className="ui right icon input">
                 <i className="lock icon"></i>
-                <input type="password" name="confirm-password" placeholder="Confirm Password" />
+                <input type="password" name="confirmPassword" placeholder="Confirm Password" value={this.state.confirmPassword} onChange={this.onChange}/>
               </div>
             </div>
             <div className="ui stackable grid">
               <div className="nine wide column">
-                <div className="ui small blue submit button">Sign Up</div>
+                <button type="submit" className="ui small blue submit button">Sign Up</button>
               </div>
               <div className="seven wide column login-link">
                 <Link to="/login">Login here.</Link>

@@ -1,7 +1,12 @@
 import { connect } from 'react-redux'
 
 import Signup from '../components/Signup'
-const mapActionCreators = {}
+
+import { signup } from 'store/modules/auth';
+
+const mapActionCreators = {
+  signup,
+}
 
 const mapStateToProps = (state) => ({})
 
