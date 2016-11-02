@@ -24,6 +24,11 @@ const config = {
   dir_test   : 'tests',
 
   // ----------------------------------
+  // API Configuration
+  // ----------------------------------
+  api_host : process.env.API_HOST,
+
+  // ----------------------------------
   // Server Configuration
   // ----------------------------------
   server_host : localip, // use string 'localhost' to prevent exposure on local network
