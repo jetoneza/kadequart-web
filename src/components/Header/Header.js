@@ -1,12 +1,12 @@
 import React from 'react'
 import { Link } from 'react-router'
 
-export const Header = ({ location }) => (
+export const Header = ({ location, logout, auth }) => (
   <div className="ui secondary fixed menu inverted main-header">
     <div className="ui container">
       <Link to="/" className="header item">KDQ</Link>
       <div className="right menu">
-        { location.pathname == '/dashboard' && <Link to="/" className="ui item">Logout</Link> }
+        { (auth && auth.user)  && <button onClick={e => logout()} className="ui item">Logout</button> }
         { location.pathname == '/' &&
           <div className="item">
             <Link to="/login" className="ui inverted basic button">Log In</Link>

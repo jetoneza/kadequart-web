@@ -1,10 +1,10 @@
 import React from 'react'
-import Header from 'components/Header'
+import HeaderContainer from 'containers/HeaderContainer'
 import 'styles/core.scss'
 
 export const CoreLayout = ({ children, location }) => (
   <div className='core-layout'>
-    <Header location={location}/>
+    <HeaderContainer location={location}/>
     <div className="main-content">
       {children}
     </div>
