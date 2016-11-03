@@ -9,6 +9,7 @@ class TransactionForm extends React.Component {
       type: '',
       amount: '',
       hasTransaction: false,
+      errors: {},
     }
 
     this.state = this.defaultState;
@@ -37,6 +38,27 @@ class TransactionForm extends React.Component {
     this.setState({type: value});
   }
 
+  isDataValid = () => {
+    const { type, amount } = this.state;
+
+    let errors = {};
+    let isValid = true;
+
+    if(!type) {
+      errors.type = 'Type is required!';
+      isValid = false;
+    }
+
+    if(!amount) {
+      errors.amount = 'Amount is required!';
+      isValid = false;
+    }
+
+    this.setState({errors});
+
+    return isValid;
+  }
+
   handleSubmit = (e) => {
     e.preventDefault();
 
@@ -52,13 +74,15 @@ class TransactionForm extends React.Component {
     }
 
     // TODO: handle submit
-    console.log(data)
+    if(this.isDataValid()) {
+      console.log(data)
 
-    this.props.closeModal();
+      this.props.closeModal();
+    }
   }
 
   render() {
-    const { type, amount } = this.state;
+    const { type, amount, errors } = this.state;
     const { transactionTypes, fetchingTransactionTypes } = this.props.transactions;
 
     let typesOption = [];
@@ -69,12 +93,12 @@ class TransactionForm extends React.Component {
 
     return (
       <form className="ui form" onSubmit={this.handleSubmit}>
-        <div className="field">
-          <label>Type</label>
+        <div className={`field ${errors.type ? 'error' : ''}`}>
+          <label>{errors.type ? errors.type : 'Type'}</label>
           <Dropdown placeholder='Select Type' value={type} loading={fetchingTransactionTypes} fluid selection options={typesOption} onChange={this.handleTypeChange} />
         </div>
-        <div className="field">
-          <label>Amount</label>
+        <div className={`field ${errors.amount ? 'error' : ''}`}>
+          <label>{errors.amount ? errors.amount : 'Amount'}</label>
           <input type="number" name="amount" placeholder="0.00" value={amount} onChange={this.handleChange} />
         </div>
         <button className="ui blue button" type="submit">Submit</button>
