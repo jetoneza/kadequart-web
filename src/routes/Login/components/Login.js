@@ -23,7 +23,6 @@ class Login extends React.Component {
 
   render() {
     const { loginErrors, loggingIn } = this.props.auth;
-    const { loading } = this.state;
 
     return (
       <div className="login-page">

@@ -25,10 +25,20 @@ class Signup extends React.Component {
   }
 
   render() {
+    const { signUpErrors, signingUp } = this.props.auth;
+
     return (
       <div className="signup-page">
         <div className="ui raised wide segment form-wrapper">
-          <form className="ui small form" onSubmit={this.handleSubmit}>
+          <form className={`ui small form ${signingUp ? 'loading' : ''} ${signUpErrors.length != 0 ? 'error' : ''}`} onSubmit={this.handleSubmit}>
+            <div className="ui error message">
+              <div className="header">Something is wrong!</div>
+              <ul className="list">
+                {signUpErrors.map((error, key) => {
+                  return <li key={key}>{error.message}</li>
+                })}
+              </ul>
+            </div>
             <div className="field">
               <div className="ui right icon input">
                 <i className="spy icon"></i>

@@ -8,6 +8,8 @@ const mapActionCreators = {
   signup,
 }
 
-const mapStateToProps = (state) => ({})
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+})
 
 export default connect(mapStateToProps, mapActionCreators)(Signup)
