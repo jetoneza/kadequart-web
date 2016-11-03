@@ -8,13 +8,37 @@ class Login extends React.Component {
     this.state = {
       username: '',
       password: '',
+      errors: {},
     }
+  }
+
+  isDataValid = () => {
+    const { username, password } = this.state;
+
+    let errors = {};
+    let isValid = true;
+
+    if(!username) {
+      errors.username = 'Username is required!';
+      isValid = false;
+    }
+
+    if(!password) {
+      errors.password = 'Password is required!';
+      isValid = false;
+    }
+
+    this.setState({errors});
+
+    return isValid;
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
 
-    this.props.login(this.state);
+    if(this.isDataValid()) {
+      this.props.login(this.state);
+    }
   }
 
   onChange = (e) => {
@@ -23,6 +47,7 @@ class Login extends React.Component {
 
   render() {
     const { loginErrors, loggingIn } = this.props.auth;
+    const { errors } = this.state;
 
     return (
       <div className="login-page">
@@ -36,13 +61,15 @@ class Login extends React.Component {
                 })}
               </ul>
             </div>
-            <div className="field">
+            <div className={`field ${errors.username ? 'error' : ''}`}>
+              {errors.username && <label>{errors.username}</label>}
               <div className="ui right icon input">
                 <i className="spy icon"></i>
                 <input type="text" name="username" placeholder="Username" value={this.state.username} onChange={this.onChange}/>
               </div>
             </div>
-            <div className="field">
+            <div className={`field ${errors.password ? 'error' : ''}`}>
+              {errors.password && <label>{errors.password}</label>}
               <div className="ui right icon input">
                 <i className="lock icon"></i>
                 <input type="password" name="password" placeholder="Password" value={this.state.password} onChange={this.onChange}/>
