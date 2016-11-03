@@ -11,13 +11,52 @@ class Signup extends React.Component {
       email: '',
       password: '',
       confirmPassword: '',
+      errors: {},
     }
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
 
-    this.props.signup(this.state);
+    if(this.isDataValid()) {
+      this.props.signup(this.state);
+    }
+  }
+
+  isDataValid = () => {
+    const { username, email, password, confirmPassword } = this.state;
+
+    let errors = {};
+    let isValid = true;
+
+    if(!username) {
+      errors.username = 'Username is required!';
+      isValid = false;
+    }
+
+    if(!email) {
+      errors.email = 'Email is required!';
+      isValid = false;
+    }
+
+    if(!password) {
+      errors.password = 'Password is required!';
+      isValid = false;
+    }
+
+    if(!confirmPassword) {
+      errors.confirmPassword = 'Password confirmation is required!';
+      isValid = false;
+    }
+
+    if(password != confirmPassword) {
+      errors.password = 'Passwords do not match!';
+      isValid = false;
+    }
+
+    this.setState({errors});
+
+    return isValid;
   }
 
   onChange = (e) => {
@@ -26,6 +65,7 @@ class Signup extends React.Component {
 
   render() {
     const { signUpErrors, signingUp } = this.props.auth;
+    const { errors } = this.state;
 
     return (
       <div className="signup-page">
@@ -39,25 +79,29 @@ class Signup extends React.Component {
                 })}
               </ul>
             </div>
-            <div className="field">
+            <div className={`field ${errors.username ? 'error' : ''}`}>
+              {errors.username && <label>{errors.username}</label>}
               <div className="ui right icon input">
                 <i className="spy icon"></i>
                 <input type="text" name="username" placeholder="Username" value={this.state.username} onChange={this.onChange}/>
               </div>
             </div>
-            <div className="field">
+            <div className={`field ${errors.email ? 'error' : ''}`}>
+              {errors.email && <label>{errors.email}</label>}
               <div className="ui right icon input">
                 <i className="mail icon"></i>
                 <input type="email" name="email" placeholder="Email" value={this.state.email} onChange={this.onChange}/>
               </div>
             </div>
-            <div className="field">
+            <div className={`field ${errors.password ? 'error' : ''}`}>
+              {errors.password && <label>{errors.password}</label>}
               <div className="ui right icon input">
                 <i className="lock icon"></i>
                 <input type="password" name="password" placeholder="Password" value={this.state.password} onChange={this.onChange}/>
               </div>
             </div>
-            <div className="field">
+            <div className={`field ${errors.confirmPassword ? 'error' : ''}`}>
+              {errors.confirmPassword && <label>{errors.confirmPassword}</label>}
               <div className="ui right icon input">
                 <i className="lock icon"></i>
                 <input type="password" name="confirmPassword" placeholder="Confirm Password" value={this.state.confirmPassword} onChange={this.onChange}/>
