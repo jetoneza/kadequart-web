@@ -2,10 +2,11 @@ import { connect } from 'react-redux'
 
 import Dashboard from '../components/Dashboard'
 
-import { getTransactionTypes } from 'store/modules/transactions';
+import { getTransactionTypes, createTransaction } from 'store/modules/transactions';
 
 const mapActionCreators = {
   getTransactionTypes,
+  createTransaction,
 }
 
 const mapStateToProps = (state) => ({

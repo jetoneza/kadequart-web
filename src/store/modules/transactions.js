@@ -6,6 +6,9 @@ import { CALL_API } from 'redux-api-middleware';
 export const GET_TXN_TYPES = 'kdq:auth:get_txn_types';
 export const GET_TXN_TYPES_SUCCESS = 'kdq:auth:get_txn_types_success';
 export const GET_TXN_TYPES_FAIL = 'kdq:auth:get_txn_types_fail';
+export const CREATE_TXN = 'kdq:auth:create_txn';
+export const CREATE_TXN_SUCCESS = 'kdq:auth:create_txn_success';
+export const CREATE_TXN_FAIL = 'kdq:auth:create_txn_fail';
 
 // ------------------------------------
 // Actions
@@ -27,8 +30,27 @@ export function getTransactionTypes() {
   }
 }
 
+export function createTransaction(data) {
+  return(dispatch, getState) => {
+    const { auth: { token } } = getState();
+    return dispatch({
+      [CALL_API]: {
+        endpoint: '/api/transactions',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(data),
+        types: [ CREATE_TXN, CREATE_TXN_SUCCESS, CREATE_TXN_FAIL],
+      },
+    });
+  }
+}
+
 export const actions = {
   getTransactionTypes,
+  createTransaction,
 };
 
 // ------------------------------------
@@ -53,6 +75,27 @@ const ACTION_HANDLERS = {
     fetchingTransactionTypes: false,
     fetchTransactionTypesErrors: action.payload.response.errors
   }),
+  [CREATE_TXN]: (state) => ({
+    ...state,
+    creating: true,
+    createErrors: [],
+    createSuccess: false,
+  }),
+  [CREATE_TXN_SUCCESS]: (state, action) => {
+    return {
+      ...state,
+      creating: false,
+      createErrors: [],
+      createSuccess: true,
+      createdTransaction: action.payload,
+    }
+  },
+  [CREATE_TXN_FAIL]: (state, action) => ({
+    ...state,
+    creating: false,
+    createErrors: action.payload.response.errors,
+    createSuccess: false,
+  }),
 };
 
 // ------------------------------------
@@ -61,6 +104,8 @@ const ACTION_HANDLERS = {
 const initialState = {
   transactionTypes: [],
   fetchTransactionTypesErrors: [],
+  createdTransaction: null,
+  createErrors: [],
 };
 export default function authReducer(state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type];

@@ -43,7 +43,7 @@ app.use(async (ctx, next) => {
     if(ctx.request.is('json')) {
       delete options.headers['content-length'];
       options.json = true;
-      options.body = ctx.body;
+      options.body = ctx.body || {};
     }
 
     if(ctx.request.is('multipart/form-data')) {

@@ -10,6 +10,7 @@ class TransactionForm extends React.Component {
       amount: '',
       hasTransaction: false,
       errors: {},
+      isSubmitting: false,
     }
 
     this.state = this.defaultState;
@@ -28,6 +29,16 @@ class TransactionForm extends React.Component {
     }
 
     this.props.getTransactionTypes();
+  }
+
+  componentWillReceiveProps(newProps, oldProps) {
+    const { createSuccess } = newProps.transactions;
+    const { isSubmitting } = this.state;
+
+    if(isSubmitting && createSuccess) {
+      this.setState({isSubmitting: false});
+      this.props.closeModal();
+    }
   }
 
   handleChange = (e) => {
@@ -65,25 +76,23 @@ class TransactionForm extends React.Component {
     const { type, amount } = this.state;
 
     const data = {
-      type,
-      amount,
+      typeId: type,
+      amount: parseFloat(amount),
     }
 
     if(this.state.hasTransaction) {
       data['id'] = this.props.transaction.id;
     }
 
-    // TODO: handle submit
     if(this.isDataValid()) {
-      console.log(data)
-
-      this.props.closeModal();
+      this.setState({isSubmitting: true});
+      this.props.createTransaction(data);
     }
   }
 
   render() {
     const { type, amount, errors } = this.state;
-    const { transactionTypes, fetchingTransactionTypes } = this.props.transactions;
+    const { transactionTypes, fetchingTransactionTypes, creating, createErrors } = this.props.transactions;
 
     let typesOption = [];
 
@@ -92,7 +101,15 @@ class TransactionForm extends React.Component {
     });
 
     return (
-      <form className="ui form" onSubmit={this.handleSubmit}>
+      <form className={`ui small form ${creating ? 'loading' : ''} ${createErrors.length != 0 ? 'error' : ''}`} onSubmit={this.handleSubmit}>
+        <div className="ui error message">
+          <div className="header">Something is wrong!</div>
+          <ul className="list">
+            {createErrors.map((error, key) => {
+              return <li key={key}>{error.message}</li>
+            })}
+          </ul>
+        </div>
         <div className={`field ${errors.type ? 'error' : ''}`}>
           <label>{errors.type ? errors.type : 'Type'}</label>
           <Dropdown placeholder='Select Type' value={type} loading={fetchingTransactionTypes} fluid selection options={typesOption} onChange={this.handleTypeChange} />
