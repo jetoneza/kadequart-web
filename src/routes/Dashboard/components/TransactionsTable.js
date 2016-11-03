@@ -21,32 +21,44 @@ class TransactionsTable extends React.Component {
       {
         id: '00001',
         amount: '1000.00',
-        type: 'donation',
+        type: {
+          id: 1,
+          name: 'Salary',
+        },
         createdAt: 'October 27, 2016'
       },
       {
         id: '00002',
         amount: '1500.00',
-        type: 'donation',
+        type: {
+          id: 2,
+          name: 'Donation',
+        },
         createdAt: 'October 27, 2016'
       },
       {
         id: '00003',
         amount: '2333.00',
-        type: 'donation',
+        type: {
+          id: 2,
+          name: 'Donation',
+        },
         createdAt: 'October 27, 2016'
       },
       {
         id: '00004',
         amount: '5500.00',
-        type: 'donation',
+        type: {
+          id: 3,
+          name: 'Offering',
+        },
         createdAt: 'October 27, 2016'
       },
     ];
 
     return (
       <div className="transactions-table-wrapper">
-        <TransactionModal ref="transactionModal" />
+        <TransactionModal ref="transactionModal" {...this.props}/>
         <ConfirmDeleteModal ref="confirmDeleteModal" />
         <table className="ui blue selectable table transactions-table">
           <thead>
@@ -64,7 +76,7 @@ class TransactionsTable extends React.Component {
                 <tr key={item.id}>
                   <td>{item.id}</td>
                   <td>KDQ {item.amount}</td>
-                  <td>{item.type}</td>
+                  <td>{item.type.name}</td>
                   <td>{item.createdAt}</td>
                   <td className="actions">
                     <button className="ui blue compact icon button" onClick={e => this.handleEditClick(item)}><i className="edit icon"></i></button>

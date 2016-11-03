@@ -22,7 +22,7 @@ class Dashboard extends React.Component {
         </div>
         <div className="ui main container">
           <Statistics {...this.props}/>
-          <TransactionsTable />
+          <TransactionsTable {...this.props}/>
         </div>
       </div>
     );

@@ -18,7 +18,7 @@ class TransactionForm extends React.Component {
     const { transaction } = this.props;
     if(transaction) {
       this.setState({
-        type: transaction.type,
+        type: transaction.type.id,
         amount: transaction.amount,
         hasTransaction: true,
       });
@@ -71,7 +71,7 @@ class TransactionForm extends React.Component {
       <form className="ui form" onSubmit={this.handleSubmit}>
         <div className="field">
           <label>Type</label>
-          <Dropdown placeholder='Select Friend' loading={fetchingTransactionTypes} fluid selection options={typesOption} onChange={this.handleTypeChange} />
+          <Dropdown placeholder='Select Type' value={type} loading={fetchingTransactionTypes} fluid selection options={typesOption} onChange={this.handleTypeChange} />
         </div>
         <div className="field">
           <label>Amount</label>
