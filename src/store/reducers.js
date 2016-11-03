@@ -2,6 +2,7 @@ import { combineReducers } from 'redux'
 import { routerReducer as router } from 'react-router-redux'
 import app from './modules/app'
 import auth from './modules/auth'
+import transactions from './modules/transactions'
 
 export const makeRootReducer = (asyncReducers) => {
   return combineReducers({
@@ -9,6 +10,7 @@ export const makeRootReducer = (asyncReducers) => {
     router,
     app,
     auth,
+    transactions,
     ...asyncReducers
   })
 }

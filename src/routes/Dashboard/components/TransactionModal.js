@@ -37,7 +37,7 @@ class TransactionModal extends React.Component {
           {!this.transaction ? 'Add New' : 'Edit'} Transaction
         </ModalHeader>
         <ModalContent>
-          <TransactionForm closeModal={this.close} transaction={this.transaction}/>
+          <TransactionForm closeModal={this.close} transaction={this.transaction} {...this.props}/>
         </ModalContent>
       </Modal>
     );

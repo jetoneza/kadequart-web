@@ -1,4 +1,5 @@
 import React from 'react';
+import { Dropdown } from 'semantic-ui-react';
 
 class TransactionForm extends React.Component {
   constructor(props) {
@@ -24,10 +25,16 @@ class TransactionForm extends React.Component {
     } else {
       this.setState(this.defaultState);
     }
+
+    this.props.getTransactionTypes();
   }
 
   handleChange = (e) => {
     this.setState({[e.target.name]: e.target.value});
+  }
+
+  handleTypeChange = (e, { value }) => {
+    this.setState({type: value});
   }
 
   handleSubmit = (e) => {
@@ -52,17 +59,19 @@ class TransactionForm extends React.Component {
 
   render() {
     const { type, amount } = this.state;
+    const { transactionTypes, fetchingTransactionTypes } = this.props.transactions;
+
+    let typesOption = [];
+
+    typesOption = transactionTypes.map(type => {
+      return {text: type.name, value: type.id};
+    });
 
     return (
       <form className="ui form" onSubmit={this.handleSubmit}>
         <div className="field">
           <label>Type</label>
-          <select className="ui fluid dropdown" name="type" value={type} onChange={this.handleChange}>
-            <option value="">Select Type</option>
-            <option value="salary">Salary</option>
-            <option value="donation">Donation</option>
-            <option value="spend">Spend</option>
-          </select>
+          <Dropdown placeholder='Select Friend' loading={fetchingTransactionTypes} fluid selection options={typesOption} onChange={this.handleTypeChange} />
         </div>
         <div className="field">
           <label>Amount</label>

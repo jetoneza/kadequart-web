@@ -11,7 +11,7 @@ class Statistics extends React.Component {
   render() {
     return (
       <div className="ui stackable grid statistics-section">
-        <TransactionModal ref="transactionModal" />
+        <TransactionModal ref="transactionModal" {...this.props}/>
         <div className="four wide column center aligned">
           <div className="ui green statistic">
             <div className="value">
