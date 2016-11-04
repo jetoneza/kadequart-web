@@ -33,7 +33,6 @@ export function signup(data) {
             done: true,
             transition: {
               success: (prevState) => {
-                console.log(prevState)
                 return {
                 pathname: prevState.router.locationBeforeTransitions.query.redirect || '/dashboard',
                 }
@@ -179,5 +178,35 @@ const initialState = {
 export default function authReducer(state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type];
 
+  if(checkAuthorization(action)) {
+    return {
+      ...state,
+      token: null,
+      user: null,
+    };
+  }
+
   return handler ? handler(state, action) : state;
+}
+
+function checkAuthorization(action) {
+  if(action.payload) {
+    const { response } = action.payload;
+    if(response) {
+      const { errors } = response;
+      if(errors) {
+        const firstError = errors[0];
+        if(firstError) {
+          const { code } = firstError;
+          if(code === 401) {
+            // TODO: Token expired
+            localStorage.removeItem('reduxPersist:auth');
+            return true;
+          }
+        }
+      }
+    }
+  }
+
+  return false;
 }
