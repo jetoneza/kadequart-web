@@ -9,6 +9,9 @@ export const GET_TXN_TYPES_FAIL = 'kdq:auth:get_txn_types_fail';
 export const CREATE_TXN = 'kdq:auth:create_txn';
 export const CREATE_TXN_SUCCESS = 'kdq:auth:create_txn_success';
 export const CREATE_TXN_FAIL = 'kdq:auth:create_txn_fail';
+export const GET_TXNS = 'kdq:auth:get_txns';
+export const GET_TXNS_SUCCESS = 'kdq:auth:get_txns_success';
+export const GET_TXNS_FAIL = 'kdq:auth:get_txns_fail';
 
 // ------------------------------------
 // Actions
@@ -25,6 +28,23 @@ export function getTransactionTypes() {
           'Authorization': `Bearer ${token}`,
         },
         types: [ GET_TXN_TYPES, GET_TXN_TYPES_SUCCESS, GET_TXN_TYPES_FAIL],
+      },
+    });
+  }
+}
+
+export function getTransactions(page = 1, pageSize = 10) {
+  return(dispatch, getState) => {
+    const { auth: { token } } = getState();
+
+    return dispatch({
+      [CALL_API]: {
+        endpoint: `/api/transactions?page=${page}&pageSize=${pageSize}`,
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        types: [ GET_TXNS, GET_TXNS_SUCCESS, GET_TXNS_FAIL],
       },
     });
   }
@@ -51,6 +71,7 @@ export function createTransaction(data) {
 export const actions = {
   getTransactionTypes,
   createTransaction,
+  getTransactions,
 };
 
 // ------------------------------------
@@ -74,6 +95,25 @@ const ACTION_HANDLERS = {
     ...state,
     fetchingTransactionTypes: false,
     fetchTransactionTypesErrors: action.payload.response.errors
+  }),
+  [GET_TXNS]: (state) => ({
+    ...state,
+    fetchingTransactions: true,
+    fetchTransactionsErrors: [],
+    createSuccess: false,
+  }),
+  [GET_TXNS_SUCCESS]: (state, action) => {
+    return {
+      ...state,
+      fetchingTransactions: false,
+      fetchTransactionsErrors: [],
+      list: action.payload,
+    }
+  },
+  [GET_TXNS_FAIL]: (state, action) => ({
+    ...state,
+    fetchingTransactions: false,
+    fetchTransactionsErrors: action.payload.response.errors
   }),
   [CREATE_TXN]: (state) => ({
     ...state,
@@ -106,6 +146,8 @@ const initialState = {
   fetchTransactionTypesErrors: [],
   createdTransaction: null,
   createErrors: [],
+  list: null,
+  fetchTransactionsErrors: [],
 };
 export default function authReducer(state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type];
