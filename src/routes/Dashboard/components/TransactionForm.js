@@ -32,12 +32,14 @@ class TransactionForm extends React.Component {
   }
 
   componentWillReceiveProps(newProps, oldProps) {
-    const { createSuccess } = newProps.transactions;
+    const { createSuccess, updateSuccess } = newProps.transactions;
     const { isSubmitting } = this.state;
 
-    if(isSubmitting && createSuccess) {
-      this.setState({isSubmitting: false});
-      this.props.closeModal();
+    if(isSubmitting) {
+      if(updateSuccess || createSuccess) {
+        this.setState({isSubmitting: false});
+        this.props.closeModal();
+      }
     }
   }
 
@@ -86,13 +88,17 @@ class TransactionForm extends React.Component {
 
     if(this.isDataValid()) {
       this.setState({isSubmitting: true});
-      this.props.createTransaction(data);
+      if(this.state.hasTransaction) {
+        this.props.updateTransaction(data);
+      } else {
+        this.props.createTransaction(data);
+      }
     }
   }
 
   render() {
     const { type, amount, errors } = this.state;
-    const { transactionTypes, fetchingTransactionTypes, creating, createErrors } = this.props.transactions;
+    const { transactionTypes, fetchingTransactionTypes, creating, createErrors, updateErrors } = this.props.transactions;
 
     let typesOption = [];
 
@@ -100,12 +106,14 @@ class TransactionForm extends React.Component {
       return {text: type.name, value: type.id};
     });
 
+    const formErrors = createErrors.length != 0 ?  createErrors : updateErrors;
+
     return (
-      <form className={`ui small form ${creating ? 'loading' : ''} ${createErrors.length != 0 ? 'error' : ''}`} onSubmit={this.handleSubmit}>
+      <form className={`ui small form ${creating ? 'loading' : ''} ${formErrors.length != 0 ? 'error' : ''}`} onSubmit={this.handleSubmit}>
         <div className="ui error message">
           <div className="header">Something is wrong!</div>
           <ul className="list">
-            {createErrors.map((error, key) => {
+            {formErrors.map((error, key) => {
               return <li key={key}>{error.message}</li>
             })}
           </ul>

@@ -197,8 +197,8 @@ function checkAuthorization(action) {
       if(errors) {
         const firstError = errors[0];
         if(firstError) {
-          const { code } = firstError;
-          if(code === 401) {
+          const { code, message } = firstError;
+          if(code === 401 && message === 'Login Failure') {
             // TODO: Token expired
             localStorage.removeItem('reduxPersist:auth');
             return true;

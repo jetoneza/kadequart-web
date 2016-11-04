@@ -9,9 +9,9 @@ class TransactionsTable extends React.Component {
   }
 
   componentWillReceiveProps(newProps, oldProps) {
-    const { createSuccess } = newProps.transactions;
+    const { createSuccess, updateSuccess } = newProps.transactions;
 
-    if(createSuccess) {
+    if(createSuccess || updateSuccess) {
       this.props.getTransactions();
     }
   }
@@ -64,7 +64,8 @@ class TransactionsTable extends React.Component {
             <th>Amount</th>
             <th>Type</th>
             <th>Date Added</th>
-            <th>Actions</th>
+            <th className="center aligned">Status</th>
+            <th className="center aligned">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -75,9 +76,15 @@ class TransactionsTable extends React.Component {
                 <td>KDQ {item.amount}</td>
                 <td>{item.type.name}</td>
                 <td>{item.created_at}</td>
-                <td className="actions">
-                  <button className="ui blue compact icon button" onClick={e => this.handleEditClick(item)}><i className="edit icon"></i></button>
-                  <button className="ui red compact icon button" onClick={e => this.handleDeleteClick(item)}><i className="trash icon"></i></button>
+                <td className="status center aligned">
+                  {item.confirmed ?
+                      <i className="icon checkmark green"></i> :
+                      <button className="mini ui blue button">Confirm</button>
+                   }
+                </td>
+                <td className="actions center aligned">
+                {!item.confirmed && <button className="ui blue compact icon button" onClick={e => this.handleEditClick(item)}><i className="edit icon"></i></button>}
+                {!item.confirmed && <button className="ui red compact icon button" onClick={e => this.handleDeleteClick(item)}><i className="trash icon"></i></button>}
                 </td>
               </tr>
             )
@@ -85,7 +92,7 @@ class TransactionsTable extends React.Component {
         </tbody>
         <tfoot>
           <tr>
-            <th colSpan="5">
+            <th colSpan="6">
               <div className="ui right floated pagination menu">
                 <a className={`icon item ${currentPage == 1 ? 'disabled' : ''}`} onClick={e => this.handlePageClick(currentPage - 1)}>
                   <i className="left chevron icon"></i>

@@ -12,6 +12,9 @@ export const CREATE_TXN_FAIL = 'kdq:auth:create_txn_fail';
 export const GET_TXNS = 'kdq:auth:get_txns';
 export const GET_TXNS_SUCCESS = 'kdq:auth:get_txns_success';
 export const GET_TXNS_FAIL = 'kdq:auth:get_txns_fail';
+export const UPDATE_TXN = 'kdq:auth:update_txn';
+export const UPDATE_TXN_SUCCESS = 'kdq:auth:update_txn_success';
+export const UPDATE_TXN_FAIL = 'kdq:auth:update_txn_fail';
 
 // ------------------------------------
 // Actions
@@ -68,10 +71,29 @@ export function createTransaction(data) {
   }
 }
 
+export function updateTransaction(data) {
+  return(dispatch, getState) => {
+    const { auth: { token } } = getState();
+    return dispatch({
+      [CALL_API]: {
+        endpoint: `/api/transactions/${data.id}`,
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(data),
+        types: [ UPDATE_TXN, UPDATE_TXN_SUCCESS, UPDATE_TXN_FAIL],
+      },
+    });
+  }
+}
+
 export const actions = {
   getTransactionTypes,
   createTransaction,
   getTransactions,
+  updateTransaction,
 };
 
 // ------------------------------------
@@ -101,6 +123,7 @@ const ACTION_HANDLERS = {
     fetchingTransactions: true,
     fetchTransactionsErrors: [],
     createSuccess: false,
+    updateSuccess: false,
   }),
   [GET_TXNS_SUCCESS]: (state, action) => {
     return {
@@ -119,6 +142,7 @@ const ACTION_HANDLERS = {
     ...state,
     creating: true,
     createErrors: [],
+    updateErrors: [],
     createSuccess: false,
   }),
   [CREATE_TXN_SUCCESS]: (state, action) => {
@@ -136,6 +160,28 @@ const ACTION_HANDLERS = {
     createErrors: action.payload.response.errors,
     createSuccess: false,
   }),
+  [UPDATE_TXN]: (state) => ({
+    ...state,
+    updating: true,
+    updateErrors: [],
+    createErrors: [],
+    updateSuccess: false,
+  }),
+  [UPDATE_TXN_SUCCESS]: (state, action) => {
+    return {
+      ...state,
+      updating: false,
+      updateErrors: [],
+      updateSuccess: true,
+      updatedTransaction: action.payload,
+    }
+  },
+  [UPDATE_TXN_FAIL]: (state, action) => ({
+    ...state,
+    updating: false,
+    updateErrors: action.payload.response.errors,
+    updateSuccess: false,
+  }),
 };
 
 // ------------------------------------
@@ -148,6 +194,8 @@ const initialState = {
   createErrors: [],
   list: null,
   fetchTransactionsErrors: [],
+  updatedTransaction: null,
+  updateErrors: [],
 };
 export default function authReducer(state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type];
