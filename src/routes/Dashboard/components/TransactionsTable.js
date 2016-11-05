@@ -9,9 +9,9 @@ class TransactionsTable extends React.Component {
   }
 
   componentWillReceiveProps(newProps, oldProps) {
-    const { createSuccess, updateSuccess } = newProps.transactions;
+    const { createSuccess, updateSuccess, confirmSuccess, deleteSuccess } = newProps.transactions;
 
-    if(createSuccess || updateSuccess) {
+    if(createSuccess || updateSuccess || confirmSuccess || deleteSuccess) {
       const { list } = newProps.transactions;
       const { currentPage } = list;
       this.props.getTransactions(currentPage);
@@ -37,6 +37,10 @@ class TransactionsTable extends React.Component {
       return;
     }
     this.props.getTransactions(page);
+  }
+
+  handleConfirmClick = (item) => {
+    this.props.confirmTransaction(item.id);
   }
 
   renderTable = () => {
@@ -81,7 +85,7 @@ class TransactionsTable extends React.Component {
                 <td className="status center aligned">
                   {item.confirmed ?
                       <i className="icon checkmark green"></i> :
-                      <button className="mini ui blue button">Confirm</button>
+                      <button className="mini ui blue button" onClick={e => this.handleConfirmClick(item)}>Confirm</button>
                    }
                 </td>
                 <td className="actions center aligned">
@@ -120,7 +124,7 @@ class TransactionsTable extends React.Component {
     return (
       <div className="transactions-table-wrapper">
         <TransactionModal ref="transactionModal" {...this.props}/>
-        <ConfirmDeleteModal ref="confirmDeleteModal" />
+        <ConfirmDeleteModal ref="confirmDeleteModal" {...this.props}/>
         { table }
       </div>
     );

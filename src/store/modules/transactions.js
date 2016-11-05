@@ -15,6 +15,12 @@ export const GET_TXNS_FAIL = 'kdq:auth:get_txns_fail';
 export const UPDATE_TXN = 'kdq:auth:update_txn';
 export const UPDATE_TXN_SUCCESS = 'kdq:auth:update_txn_success';
 export const UPDATE_TXN_FAIL = 'kdq:auth:update_txn_fail';
+export const CONFIRM_TXN = 'kdq:auth:confirm_txn';
+export const CONFIRM_TXN_SUCCESS = 'kdq:auth:confirm_txn_success';
+export const CONFIRM_TXN_FAIL = 'kdq:auth:confirm_txn_fail';
+export const DELETE_TXN = 'kdq:auth:delete_txn';
+export const DELETE_TXN_SUCCESS = 'kdq:auth:delete_txn_success';
+export const DELETE_TXN_FAIL = 'kdq:auth:delete_txn_fail';
 
 // ------------------------------------
 // Actions
@@ -89,11 +95,49 @@ export function updateTransaction(data) {
   }
 }
 
+export function confirmTransaction(id) {
+  return(dispatch, getState) => {
+    const { auth: { token } } = getState();
+    return dispatch({
+      [CALL_API]: {
+        endpoint: `/api/transactions/${id}/confirm`,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({}),
+        types: [ CONFIRM_TXN, CONFIRM_TXN_SUCCESS, CONFIRM_TXN_FAIL],
+      },
+    });
+  }
+}
+
+export function deleteTransaction(id) {
+  return(dispatch, getState) => {
+    const { auth: { token } } = getState();
+    return dispatch({
+      [CALL_API]: {
+        endpoint: `/api/transactions/${id}`,
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({}),
+        types: [ DELETE_TXN, DELETE_TXN_SUCCESS, DELETE_TXN_FAIL],
+      },
+    });
+  }
+}
+
 export const actions = {
   getTransactionTypes,
   createTransaction,
   getTransactions,
   updateTransaction,
+  confirmTransaction,
+  deleteTransaction,
 };
 
 // ------------------------------------
@@ -124,6 +168,8 @@ const ACTION_HANDLERS = {
     fetchTransactionsErrors: [],
     createSuccess: false,
     updateSuccess: false,
+    confirmSuccess: false,
+    deleteSuccess: false,
   }),
   [GET_TXNS_SUCCESS]: (state, action) => {
     return {
@@ -182,6 +228,48 @@ const ACTION_HANDLERS = {
     updateErrors: action.payload.response.errors,
     updateSuccess: false,
   }),
+  [CONFIRM_TXN]: (state) => ({
+    ...state,
+    confirming: true,
+    confirmErrors: [],
+    confirmSuccess: false,
+  }),
+  [CONFIRM_TXN_SUCCESS]: (state, action) => {
+    return {
+      ...state,
+      confirming: false,
+      confirmErrors: [],
+      confirmSuccess: true,
+      confirmedTransaction: action.payload,
+    }
+  },
+  [CONFIRM_TXN_FAIL]: (state, action) => ({
+    ...state,
+    confirming: false,
+    confirmErrors: action.payload.response.errors,
+    confirmSuccess: false,
+  }),
+  [DELETE_TXN]: (state) => ({
+    ...state,
+    deleting: true,
+    deleteErrors: [],
+    deleteSuccess: false,
+  }),
+  [DELETE_TXN_SUCCESS]: (state, action) => {
+    return {
+      ...state,
+      deleting: false,
+      deletErrors: [],
+      deleteSuccess: true,
+      deleteResponse: action.payload,
+    }
+  },
+  [DELETE_TXN_FAIL]: (state, action) => ({
+    ...state,
+    deleting: false,
+    deleteErrors: action.payload.response.errors,
+    deleteSuccess: false,
+  }),
 };
 
 // ------------------------------------
@@ -196,6 +284,9 @@ const initialState = {
   fetchTransactionsErrors: [],
   updatedTransaction: null,
   updateErrors: [],
+  confirmedTransaction: null,
+  confirmErrors: [],
+  deleteErrors: [],
 };
 export default function authReducer(state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type];

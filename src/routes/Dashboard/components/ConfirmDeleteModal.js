@@ -12,6 +12,7 @@ class ConfirmDeleteModal extends React.Component {
 
     this.state = {
       open: false,
+      isDeleting: false,
     }
 
     this.transaction = null;
@@ -29,16 +30,22 @@ class ConfirmDeleteModal extends React.Component {
     this.setState({open: false});
   }
 
+  componentWillReceiveProps(newProps, oldProps) {
+    const { deleteSuccess } = newProps.transactions;
+    const { isDeleting } = this.state;
+
+    if(isDeleting) {
+      if(deleteSuccess) {
+        this.setState({isDeleting: false});
+        this.close();
+      }
+    }
+  }
+
   handleDeleteClick = () => {
     if(this.transaction) {
-      const data = {
-        id: this.transaction.id
-      };
-
-      console.log(data);
-
-      //TODO handle delete
-      this.close();
+      this.setState({isDeleting: true});
+      this.props.deleteTransaction(this.transaction.id);
     }
   }
 
