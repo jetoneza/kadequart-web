@@ -7,13 +7,18 @@ import { formatNumber } from 'utils/currency'
 class Dashboard extends React.Component {
   componentDidMount() {
     this.props.getUserKaha();
+    this.props.getStatistics();
   }
 
   componentWillReceiveProps(newProps, oldProps) {
-    const { confirmSuccess } = newProps.transactions;
+    const { confirmSuccess, createSuccess, deleteSuccess } = newProps.transactions;
 
     if(confirmSuccess) {
       this.props.getUserKaha();
+    }
+
+    if(confirmSuccess || deleteSuccess) {
+      this.props.getStatistics();
     }
   }
 

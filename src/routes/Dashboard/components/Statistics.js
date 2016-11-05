@@ -1,5 +1,6 @@
 import React from 'react';
 import TransactionModal from './TransactionModal';
+import { formatNumber } from 'utils/currency'
 
 class Statistics extends React.Component {
 
@@ -9,13 +10,16 @@ class Statistics extends React.Component {
   }
 
   render() {
+    const { fetchingStatistics, data } = this.props.statistics;
     return (
       <div className="ui stackable grid statistics-section">
         <TransactionModal ref="transactionModal" {...this.props}/>
         <div className="four wide column center aligned">
           <div className="ui green statistic">
             <div className="value">
-              <i className="line chart icon"></i> 10,000
+              { fetchingStatistics && <div className="ui active inline loader"></div> }
+              { !fetchingStatistics && <i className="line chart icon"></i> }
+              { !fetchingStatistics && (data && ` ${formatNumber(data.topPayin, '', 0)}`) }
             </div>
             <div className="label">
               Top Pay In
@@ -25,7 +29,9 @@ class Statistics extends React.Component {
         <div className="four wide column center aligned">
           <div className="ui red statistic">
             <div className="value">
-              <i className="level down icon"></i> 6,000
+              { fetchingStatistics && <div className="ui active inline loader"></div> }
+              { !fetchingStatistics && <i className="level down icon"></i> }
+              { !fetchingStatistics && (data && ` ${formatNumber(data.topPayout, '', 0)}`) }
             </div>
             <div className="label">
               Top Pay Out
@@ -35,7 +41,9 @@ class Statistics extends React.Component {
         <div className="four wide column center aligned">
           <div className="ui teal statistic">
             <div className="value">
-              <i className="exchange icon"></i> 143
+              { fetchingStatistics && <div className="ui active inline loader"></div> }
+              { !fetchingStatistics && <i className="exchange icon"></i> }
+              { !fetchingStatistics && (data && ` ${formatNumber(data.transactionsCount, '', 0)}`) }
             </div>
             <div className="label">
               Transactions

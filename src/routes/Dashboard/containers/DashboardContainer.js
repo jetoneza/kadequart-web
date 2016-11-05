@@ -12,6 +12,7 @@ import {
 } from 'store/modules/transactions';
 
 import { getUserKaha } from 'store/modules/auth';
+import { getStatistics } from 'store/modules/statistics';
 
 const mapActionCreators = {
   getTransactionTypes,
@@ -21,11 +22,13 @@ const mapActionCreators = {
   confirmTransaction,
   deleteTransaction,
   getUserKaha,
+  getStatistics,
 }
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
   transactions: state.transactions,
+  statistics: state.statistics,
 })
 
 export default connect(mapStateToProps, mapActionCreators)(Dashboard)
