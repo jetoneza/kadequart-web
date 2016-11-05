@@ -11,6 +11,8 @@ import {
   deleteTransaction
 } from 'store/modules/transactions';
 
+import { getUserKaha } from 'store/modules/auth';
+
 const mapActionCreators = {
   getTransactionTypes,
   createTransaction,
@@ -18,6 +20,7 @@ const mapActionCreators = {
   updateTransaction,
   confirmTransaction,
   deleteTransaction,
+  getUserKaha,
 }
 
 const mapStateToProps = (state) => ({

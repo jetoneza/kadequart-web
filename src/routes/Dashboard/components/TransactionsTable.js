@@ -1,6 +1,7 @@
 import React from 'react';
 import TransactionModal from './TransactionModal';
 import ConfirmDeleteModal from './ConfirmDeleteModal';
+import { formatNumber } from 'utils/currency';
 
 class TransactionsTable extends React.Component {
 
@@ -79,7 +80,7 @@ class TransactionsTable extends React.Component {
             return (
               <tr key={item.id}>
                 <td>{item.id}</td>
-                <td>KDQ {item.amount}</td>
+                <td>{formatNumber(item.amount, 'KDQ')}</td>
                 <td>{item.type.name}</td>
                 <td>{item.created_at}</td>
                 <td className="status center aligned">

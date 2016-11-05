@@ -12,6 +12,9 @@ export const LOGIN_SUCCESS = 'hp:auth:login_success';
 export const LOGIN_FAIL = 'hp:auth:login_fail';
 export const LOGOUT = 'hp:auth:logout';
 export const LOGOUT_SUCCESS = 'hp:auth:logout_success';
+export const GET_KAHA = 'kdq:auth:get_kaha';
+export const GET_KAHA_SUCCESS = 'kdq:auth:get_kaha_success';
+export const GET_KAHA_FAIL = 'kdq:auth:get_kaha_fail';
 
 // ------------------------------------
 // Actions
@@ -86,10 +89,28 @@ export function logout() {
   };
 }
 
+export function getUserKaha() {
+  return(dispatch, getState) => {
+    const { auth: { token } } = getState();
+
+    return dispatch({
+      [CALL_API]: {
+        endpoint: '/api/user/kaha',
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        types: [ GET_KAHA, GET_KAHA_SUCCESS, GET_KAHA_FAIL],
+      },
+    });
+  }
+}
+
 export const actions = {
   signup,
   login,
   logout,
+  getUserKaha,
 };
 
 // ------------------------------------
@@ -164,6 +185,24 @@ const ACTION_HANDLERS = {
     token: null,
     user: null,
   }),
+  [GET_KAHA]: (state) => ({
+    ...state,
+    fetchingKaha: true,
+    fetchKahaErrors: [],
+  }),
+  [GET_KAHA_SUCCESS]: (state, action) => {
+    return {
+      ...state,
+      fetchingKaha: false,
+      fetchKahaErrors: [],
+      kaha: action.payload,
+    }
+  },
+  [GET_KAHA_FAIL]: (state, action) => ({
+    ...state,
+    fetchingKaha: false,
+    fetchKahaErrors: action.payload.response.errors
+  }),
 };
 
 // ------------------------------------
@@ -174,6 +213,8 @@ const initialState = {
   token: null,
   user: null,
   loginErrors: [],
+  fetchKahaErrors: [],
+  kaha: null,
 };
 export default function authReducer(state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type];
