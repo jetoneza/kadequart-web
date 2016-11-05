@@ -12,7 +12,9 @@ class TransactionsTable extends React.Component {
     const { createSuccess, updateSuccess } = newProps.transactions;
 
     if(createSuccess || updateSuccess) {
-      this.props.getTransactions();
+      const { list } = newProps.transactions;
+      const { currentPage } = list;
+      this.props.getTransactions(currentPage);
     }
   }
 
