@@ -1,7 +1,7 @@
 import React from 'react';
 import TransactionModal from './TransactionModal';
 import ConfirmDeleteModal from './ConfirmDeleteModal';
-import { formatNumber } from 'utils/currency';
+import { formatNumber, zeroPad } from 'utils/currency';
 
 class TransactionsTable extends React.Component {
 
@@ -79,9 +79,15 @@ class TransactionsTable extends React.Component {
           {data.map(item => {
             return (
               <tr key={item.id}>
-                <td>{item.id}</td>
-                <td>{formatNumber(item.amount, 'KDQ')}</td>
-                <td>{item.type.name}</td>
+                <td>{zeroPad(item.id, 8)}</td>
+                <td>
+                  <div className={`ui ${item.type.type === 'inflow' ? 'green' : 'red'} label`}>
+                    {formatNumber(item.type.type === 'inflow' ? item.amount : (item.amount * -1), '')}
+                  </div>
+                </td>
+                <td>
+                  {item.type.name}
+                </td>
                 <td>{item.created_at}</td>
                 <td className="status center aligned">
                   {item.confirmed ?
