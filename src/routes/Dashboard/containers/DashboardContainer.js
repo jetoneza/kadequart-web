@@ -12,7 +12,7 @@ import {
 } from 'store/modules/transactions';
 
 import { getUserKaha } from 'store/modules/auth';
-import { getStatistics } from 'store/modules/statistics';
+import { getStatistics, getDataset } from 'store/modules/statistics';
 
 const mapActionCreators = {
   getTransactionTypes,
@@ -23,6 +23,7 @@ const mapActionCreators = {
   deleteTransaction,
   getUserKaha,
   getStatistics,
+  getDataset,
 }
 
 const mapStateToProps = (state) => ({

@@ -6,6 +6,9 @@ import { CALL_API } from 'redux-api-middleware';
 export const GET_STATISTICS = 'kdq:auth:get_statistics';
 export const GET_STATISTICS_SUCCESS = 'kdq:auth:get_statistics_success';
 export const GET_STATISTICS_FAIL = 'kdq:auth:get_statistics_fail';
+export const GET_DATASET = 'kdq:auth:get_dataset';
+export const GET_DATASET_SUCCESS = 'kdq:auth:get_dataset_success';
+export const GET_DATASET_FAIL = 'kdq:auth:get_dataset_fail';
 
 // ------------------------------------
 // Actions
@@ -27,8 +30,26 @@ export function getStatistics() {
   }
 }
 
+export function getDataset() {
+  return(dispatch, getState) => {
+    const { auth: { token } } = getState();
+
+    return dispatch({
+      [CALL_API]: {
+        endpoint: '/api/user/dataset',
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        types: [ GET_DATASET, GET_DATASET_SUCCESS, GET_DATASET_FAIL],
+      },
+    });
+  }
+}
+
 export const actions = {
   getStatistics,
+  getDataset,
 };
 
 // ------------------------------------
@@ -53,6 +74,24 @@ const ACTION_HANDLERS = {
     fetchingStatistics: false,
     fetchStatisticsErrors: action.payload.response.errors
   }),
+  [GET_DATASET]: (state) => ({
+    ...state,
+    fetchingDataset: true,
+    fetchDatasetErrors: [],
+  }),
+  [GET_DATASET_SUCCESS]: (state, action) => {
+    return {
+      ...state,
+      fetchingDataset: false,
+      fetchDatasetErrors: [],
+      dataset: action.payload,
+    }
+  },
+  [GET_DATASET_FAIL]: (state, action) => ({
+    ...state,
+    fetchingDataset: false,
+    fetchDatasetErrors: action.payload.response.errors
+  }),
 };
 
 // ------------------------------------
@@ -60,7 +99,9 @@ const ACTION_HANDLERS = {
 // ------------------------------------
 const initialState = {
   data: null,
+  dataset: [],
   fetchStatisticsErrors: [],
+  fetchDatasetErrors: [],
 };
 export default function authReducer(state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type];

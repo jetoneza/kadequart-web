@@ -5,8 +5,56 @@ class Graph extends React.Component {
   constructor(props) {
     super(props);
 
-    this.data = {
-      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    this.state = {
+      data: {
+        labels: [],
+        datasets: []
+      }
+    };
+
+    this.options = {
+      responsive: true,
+      legend: {
+        display: false
+      },
+      scales: {
+        yAxes: [{
+          ticks: {
+            fontColor: '#bedff4',
+            beginAtZero: true,
+          }
+        }],
+        xAxes: [{
+          gridLines: {
+            display: false,
+          },
+          ticks: {
+            fontColor: '#bedff4',
+          }
+        }],
+      },
+    };
+  }
+
+  componentDidMount() {
+    this.initializeGraph(this.props.dataset)
+  }
+
+  componentWillReceiveProps(newProps, oldProps) {
+    this.initializeGraph(newProps.dataset)
+  }
+
+  initializeGraph = (dataset) => {
+    let labels = [];
+    let dataItems = [];
+
+    dataset.forEach(item => {
+      labels.push(item.month);
+      dataItems.push(item.amount);
+    })
+
+    let data = {
+      labels,
       datasets: [
         {
           label: 'Balance',
@@ -22,38 +70,20 @@ class Graph extends React.Component {
           pointBorderWidth: 0,
           pointRadius: 0,
           pointHitRadius: 5,
-          data: [500, 730, 240, 495, 400, 560, 300, 180, 350, 190, 390, 390],
+          data: dataItems,
         },
       ]
-    };
+    }
 
-    this.options = {
-      responsive: true,
-      legend: {
-        display: false
-      },
-      scales: {
-        yAxes: [{
-          ticks: {
-            display: false,
-          }
-        }],
-        xAxes: [{
-          gridLines: {
-            display: false,
-          },
-          ticks: {
-            fontColor: '#bedff4',
-          }
-        }],
-      },
-    };
+    this.setState({data});
   }
 
   render() {
+    const { data } = this.state;
+
     return (
       <div className="graph">
-        <Line data={this.data} options={this.options} height={75} />
+        <Line data={data} options={this.options} height={75} />
       </div>
     );
   }
