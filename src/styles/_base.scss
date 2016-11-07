@@ -2,6 +2,17 @@
   .main-header {
     padding-top: 10px;
   }
+  .flash-message {
+    position: fixed;
+    top: -70px;
+    margin: 0;
+    transition: top .5s;
+    right: 40px;
+    z-index: 1;
+    &.active {
+      top: 50px;
+    }
+  }
   .main-content {
     @import "./components/login.scss";
     @import "./components/signup.scss";

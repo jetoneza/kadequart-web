@@ -22,6 +22,7 @@ class Graph extends React.Component {
           ticks: {
             fontColor: '#bedff4',
             beginAtZero: true,
+            maxTicksLimit: 8,
           }
         }],
         xAxes: [{
