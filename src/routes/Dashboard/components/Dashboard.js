@@ -8,7 +8,6 @@ class Dashboard extends React.Component {
   componentDidMount() {
     this.props.getUserKaha();
     this.props.getStatistics();
-    this.props.getDataset();
   }
 
   componentWillReceiveProps(newProps, oldProps) {
@@ -16,7 +15,6 @@ class Dashboard extends React.Component {
 
     if(confirmSuccess) {
       this.props.getUserKaha();
-      this.props.getDataset();
     }
 
     if(createSuccess || confirmSuccess || deleteSuccess) {
@@ -26,7 +24,6 @@ class Dashboard extends React.Component {
 
   render() {
     const { kaha, fetchingKaha } = this.props.auth;
-    const { dataset } = this.props.statistics;
     return (
       <div className="dashboard-page">
         <div className="hero-section">
@@ -40,7 +37,7 @@ class Dashboard extends React.Component {
               </div>
             </div>
           </div>
-          <Graph dataset={dataset}/>
+          <Graph {...this.props}/>
         </div>
         <div className="ui main container">
           <Statistics {...this.props}/>

@@ -9,7 +9,8 @@ class Graph extends React.Component {
       data: {
         labels: [],
         datasets: []
-      }
+      },
+      isFetching: false,
     };
 
     this.options = {
@@ -38,11 +39,22 @@ class Graph extends React.Component {
   }
 
   componentDidMount() {
-    this.initializeGraph(this.props.dataset)
+    this.props.getDataset();
+    this.setState({isFetching: true});
   }
 
   componentWillReceiveProps(newProps, oldProps) {
-    this.initializeGraph(newProps.dataset)
+    const { confirmSuccess  } = newProps.transactions;
+    const { fetchingDataset } = newProps.statistics;
+
+    if(confirmSuccess) {
+      this.props.getDataset();
+      this.setState({isFetching: true});
+    }
+
+    if(!fetchingDataset && this.state.isFetching) {
+      this.initializeGraph(newProps.statistics.dataset)
+    }
   }
 
   initializeGraph = (dataset) => {
@@ -76,7 +88,7 @@ class Graph extends React.Component {
       ]
     }
 
-    this.setState({data});
+    this.setState({data, isFetching: false});
   }
 
   render() {
