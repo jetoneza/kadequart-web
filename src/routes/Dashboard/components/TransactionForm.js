@@ -8,6 +8,7 @@ class TransactionForm extends React.Component {
     this.defaultState = {
       type: '',
       amount: '',
+      notes: '',
       hasTransaction: false,
       errors: {},
       isSubmitting: false,
@@ -22,6 +23,7 @@ class TransactionForm extends React.Component {
       this.setState({
         type: transaction.type.id,
         amount: transaction.amount,
+        notes: transaction.notes,
         hasTransaction: true,
       });
     } else {
@@ -75,11 +77,12 @@ class TransactionForm extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
 
-    const { type, amount } = this.state;
+    const { type, amount, notes } = this.state;
 
     const data = {
       typeId: type,
       amount: parseFloat(amount),
+      notes,
     }
 
     if(this.state.hasTransaction) {
@@ -97,7 +100,7 @@ class TransactionForm extends React.Component {
   }
 
   render() {
-    const { type, amount, errors } = this.state;
+    const { type, amount, notes, errors } = this.state;
     const { transactionTypes, fetchingTransactionTypes, creating, createErrors, updateErrors } = this.props.transactions;
 
     let typesOption = [];
@@ -125,6 +128,10 @@ class TransactionForm extends React.Component {
         <div className={`field ${errors.amount ? 'error' : ''}`}>
           <label>{errors.amount ? errors.amount : 'Amount'}</label>
           <input type="number" name="amount" placeholder="0.00" value={amount} onChange={this.handleChange} />
+        </div>
+        <div className={`field ${errors.notes ? 'error' : ''}`}>
+          <label>{errors.notes ? errors.notes : 'Notes'}</label>
+          <textarea name="notes" placeholder="(Optional)" value={notes} onChange={this.handleChange}></textarea>
         </div>
         <button className="ui blue button" type="submit">Submit</button>
       </form>

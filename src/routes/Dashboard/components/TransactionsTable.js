@@ -1,6 +1,7 @@
 import React from 'react';
 import TransactionModal from './TransactionModal';
 import ConfirmDeleteModal from './ConfirmDeleteModal';
+import NoteModal from './NoteModal';
 import { formatNumber, zeroPad } from 'utils/currency';
 
 class TransactionsTable extends React.Component {
@@ -44,6 +45,12 @@ class TransactionsTable extends React.Component {
     this.props.confirmTransaction(item.id);
   }
 
+  readNotes = (notes) => {
+    const { noteModal } = this.refs;
+    noteModal.setNotes(notes);
+    noteModal.open()
+  }
+
   renderTable = () => {
     const { list, fetchingTransactions } = this.props.transactions;
     const { data, lastPage, currentPage } = list;
@@ -70,6 +77,7 @@ class TransactionsTable extends React.Component {
             <th>Transaction #</th>
             <th>Amount</th>
             <th>Type</th>
+            <th>Notes</th>
             <th>Date Added</th>
             <th className="center aligned">Status</th>
             <th className="center aligned">Actions</th>
@@ -87,6 +95,9 @@ class TransactionsTable extends React.Component {
                 </td>
                 <td>
                   {item.type.name}
+                </td>
+                <td>
+                  {item.notes ? <a onClick={e => this.readNotes(item.notes)}>Read notes</a> : 'n/a'}
                 </td>
                 <td>{item.created_at}</td>
                 <td className="status center aligned">
@@ -130,6 +141,7 @@ class TransactionsTable extends React.Component {
 
     return (
       <div className="transactions-table-wrapper">
+        <NoteModal ref="noteModal" />
         <TransactionModal ref="transactionModal" {...this.props}/>
         <ConfirmDeleteModal ref="confirmDeleteModal" {...this.props}/>
         { table }
