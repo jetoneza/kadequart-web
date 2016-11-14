@@ -2,6 +2,7 @@ import React from 'react';
 import TransactionModal from './TransactionModal';
 import ConfirmDeleteModal from './ConfirmDeleteModal';
 import NoteModal from './NoteModal';
+import ConfirmationModal from './ConfirmationModal';
 import { formatNumber, zeroPad } from 'utils/currency';
 
 class TransactionsTable extends React.Component {
@@ -41,8 +42,10 @@ class TransactionsTable extends React.Component {
     this.props.getTransactions(page);
   }
 
-  handleConfirmClick = (item) => {
-    this.props.confirmTransaction(item.id);
+  handleConfirmClick = (transaction) => {
+    const { confirmationModal } = this.refs;
+    confirmationModal.setTransaction(transaction);
+    confirmationModal.open()
   }
 
   readNotes = (notes) => {
@@ -116,7 +119,7 @@ class TransactionsTable extends React.Component {
         </tbody>
         <tfoot>
           <tr>
-            <th colSpan="6">
+            <th colSpan="7">
               <div className="ui right floated pagination menu">
                 <a className={`icon item ${currentPage == 1 ? 'disabled' : ''}`} onClick={e => this.handlePageClick(currentPage - 1)}>
                   <i className="left chevron icon"></i>
@@ -144,6 +147,7 @@ class TransactionsTable extends React.Component {
         <NoteModal ref="noteModal" />
         <TransactionModal ref="transactionModal" {...this.props}/>
         <ConfirmDeleteModal ref="confirmDeleteModal" {...this.props}/>
+        <ConfirmationModal ref="confirmationModal" {...this.props}/>
         { table }
       </div>
     );
