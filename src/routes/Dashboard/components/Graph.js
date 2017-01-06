@@ -57,6 +57,10 @@ class Graph extends React.Component {
     }
   }
 
+  shouldComponentUpdate(newProps, newState) {
+    return newProps.statistics.dataset != this.props.statistics.dataset;
+  }
+
   initializeGraph = (dataset) => {
     let labels = [];
     let dataItems = [];
