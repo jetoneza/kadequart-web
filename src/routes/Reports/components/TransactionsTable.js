@@ -15,18 +15,23 @@ class TransactionsTable extends React.Component {
       YEAR: 'year',
     }
 
-    // TODO: set as constants
-    const dateFormat = 'YYYY-MM-DD HH:mm:ss'
     const dateFilter = this.dateFilters.DAY
 
-    const startDate = moment().startOf(dateFilter).format(dateFormat)
-    const endDate = moment().endOf(dateFilter).format(dateFormat)
+    const { startDate, endDate } = this.setDates(dateFilter)
 
     this.state = {
       dateFilter,
       startDate,
       endDate,
     }
+  }
+
+  setDates = (dateFilter) => {
+    const dateFormat = 'YYYY-MM-DD HH:mm:ss'
+    const startDate = moment().startOf(dateFilter).format(dateFormat)
+    const endDate = moment().endOf(dateFilter).format(dateFormat)
+
+    return { startDate, endDate }
   }
 
   componentDidMount() {
@@ -38,12 +43,13 @@ class TransactionsTable extends React.Component {
   }
 
   handlePageClick = (page) => {
+    const { startDate, endDate } = this.state
     const { list } = this.props.transactions
     const { lastPage, currentPage } = list
     if(page < 1 || page > lastPage || page == currentPage) {
       return
     }
-    this.props.getTransactions(page)
+    this.props.getTransactions(page, 10, startDate, endDate)
   }
 
   readNotes = (notes) => {
@@ -135,11 +141,10 @@ class TransactionsTable extends React.Component {
   handleSelectChange = (event, target) => {
     const dateFilter = this.dateFilters[target.value]
 
-    const dateFormat = 'YYYY-MM-DD HH:mm:ss'
-    const startDate = moment().startOf(dateFilter).format(dateFormat)
-    const endDate = moment().endOf(dateFilter).format(dateFormat)
+    const { startDate, endDate } = this.setDates(dateFilter)
 
     this.props.getTransactions(1, 10, startDate, endDate)
+    this.setState({startDate, endDate, dateFilter})
   }
 
   render() {
@@ -161,6 +166,7 @@ class TransactionsTable extends React.Component {
         <div className="field">
           <Select placeholder="Filter by" options={options} onChange={this.handleSelectChange}/>
         </div>
+        <h1 className="title">Summary for this {this.state.dateFilter}.</h1>
         { table }
       </div>
     )
