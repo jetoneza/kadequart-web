@@ -1,7 +1,7 @@
 import React from 'react';
 import TransactionModal from './TransactionModal';
 import ConfirmDeleteModal from './ConfirmDeleteModal';
-import NoteModal from './NoteModal';
+import NoteModal from 'components/NoteModal';
 import ConfirmationModal from './ConfirmationModal';
 import { formatNumber, zeroPad } from 'utils/currency';
 
