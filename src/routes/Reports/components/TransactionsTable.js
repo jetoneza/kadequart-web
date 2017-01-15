@@ -1,63 +1,41 @@
-import React from 'react';
-import TransactionModal from './TransactionModal';
-import ConfirmDeleteModal from './ConfirmDeleteModal';
-import NoteModal from 'components/NoteModal';
-import ConfirmationModal from './ConfirmationModal';
-import { formatNumber, zeroPad } from 'utils/currency';
+import React from 'react'
+import NoteModal from 'components/NoteModal'
+import { formatNumber, zeroPad } from 'utils/currency'
 
 class TransactionsTable extends React.Component {
 
   componentDidMount() {
-    // TODO: create base table class
-    this.props.getTransactions();
+    this.props.getTransactions()
   }
 
   componentWillReceiveProps(newProps, oldProps) {
-    const { createSuccess, updateSuccess, confirmSuccess, deleteSuccess } = newProps.transactions;
+    const { createSuccess, updateSuccess, confirmSuccess, deleteSuccess } = newProps.transactions
 
     if(createSuccess || updateSuccess || confirmSuccess || deleteSuccess) {
-      const { list } = newProps.transactions;
-      const { currentPage } = list;
-      this.props.getTransactions(currentPage);
+      const { list } = newProps.transactions
+      const { currentPage } = list
+      this.props.getTransactions(currentPage)
     }
-  }
-
-  handleEditClick = (transaction) => {
-    const { transactionModal } = this.refs;
-    transactionModal.setTransaction(transaction);
-    transactionModal.open()
-  }
-
-  handleDeleteClick = (transaction) => {
-    const { confirmDeleteModal } = this.refs;
-    confirmDeleteModal.setTransaction(transaction);
-    confirmDeleteModal.open()
   }
 
   handlePageClick = (page) => {
-    const { list } = this.props.transactions;
-    const { lastPage, currentPage } = list;
+    const { list } = this.props.transactions
+    const { lastPage, currentPage } = list
     if(page < 1 || page > lastPage || page == currentPage) {
-      return;
+      return
     }
-    this.props.getTransactions(page);
-  }
-
-  handleConfirmClick = (transaction) => {
-    const { confirmationModal } = this.refs;
-    confirmationModal.setTransaction(transaction);
-    confirmationModal.open()
+    this.props.getTransactions(page)
   }
 
   readNotes = (notes) => {
-    const { noteModal } = this.refs;
-    noteModal.setNotes(notes);
+    const { noteModal } = this.refs
+    noteModal.setNotes(notes)
     noteModal.open()
   }
 
   renderTable = () => {
-    const { list, fetchingTransactions } = this.props.transactions;
-    const { data, lastPage, currentPage } = list;
+    const { list, fetchingTransactions } = this.props.transactions
+    const { data, lastPage, currentPage } = list
 
     if(fetchingTransactions) {
       return (
@@ -65,10 +43,10 @@ class TransactionsTable extends React.Component {
           <p>Fetching transactions.</p>
           <p>Please wait.</p>
         </div>
-      );
+      )
     }
 
-    let pages = [];
+    let pages = []
 
     for(let page = 1; page <= lastPage; page++) {
       pages.push(<a key={page} className={`item ${page == currentPage ? 'active' : ''}`} onClick={e => this.handlePageClick(page)}>{page}</a>)
@@ -83,8 +61,6 @@ class TransactionsTable extends React.Component {
             <th>Type</th>
             <th>Notes</th>
             <th>Date Added</th>
-            <th className="center aligned">Status</th>
-            <th className="center aligned">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -104,16 +80,6 @@ class TransactionsTable extends React.Component {
                   {item.notes ? <a onClick={e => this.readNotes(item.notes)}>Read notes</a> : 'n/a'}
                 </td>
                 <td>{item.created_at}</td>
-                <td className="status center aligned">
-                  {item.confirmed ?
-                      <i className="icon checkmark green"></i> :
-                      <button className="mini ui blue button" onClick={e => this.handleConfirmClick(item)}>Confirm</button>
-                   }
-                </td>
-                <td className="actions center aligned">
-                {!item.confirmed && <button className="ui blue compact icon button" onClick={e => this.handleEditClick(item)}><i className="edit icon"></i></button>}
-                {!item.confirmed && <button className="ui red compact icon button" onClick={e => this.handleDeleteClick(item)}><i className="trash icon"></i></button>}
-                </td>
               </tr>
             )
           })}
@@ -136,23 +102,21 @@ class TransactionsTable extends React.Component {
           </tr>
         </tfoot>
       </table>
-    );
+    )
   }
 
   render() {
-    const { list } = this.props.transactions;
-    const table = list ? this.renderTable() : null;
+    const { list } = this.props.transactions
+    const table = list ? this.renderTable() : null
 
     return (
       <div className="transactions-table-wrapper">
         <NoteModal ref="noteModal" />
-        <TransactionModal ref="transactionModal" {...this.props}/>
-        <ConfirmDeleteModal ref="confirmDeleteModal" {...this.props}/>
-        <ConfirmationModal ref="confirmationModal" {...this.props}/>
         { table }
       </div>
-    );
+    )
   }
 }
 
-export default TransactionsTable;
+export default TransactionsTable
+
