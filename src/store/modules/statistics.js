@@ -13,13 +13,13 @@ export const GET_DATASET_FAIL = 'kdq:auth:get_dataset_fail';
 // ------------------------------------
 // Actions
 // ------------------------------------
-export function getStatistics() {
+export function getStatistics(startDate, endDate) {
   return(dispatch, getState) => {
     const { auth: { token } } = getState();
 
     return dispatch({
       [CALL_API]: {
-        endpoint: '/api/user/statistics',
+        endpoint: `/api/user/statistics?startDate=${startDate}&endDate=${endDate}`,
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,

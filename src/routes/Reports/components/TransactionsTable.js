@@ -1,6 +1,7 @@
 import React from 'react'
 import moment from 'moment'
 import NoteModal from 'components/NoteModal'
+import Statistics from './Statistics'
 import { formatNumber, zeroPad } from 'utils/currency'
 import { Select } from 'semantic-ui-react';
 
@@ -40,6 +41,7 @@ class TransactionsTable extends React.Component {
     const { startDate, endDate } = this.state
 
     this.props.getTransactions(1, 10, startDate, endDate)
+    this.props.getStatistics(startDate, endDate)
   }
 
   handlePageClick = (page) => {
@@ -144,7 +146,14 @@ class TransactionsTable extends React.Component {
     const { startDate, endDate } = this.setDates(dateFilter)
 
     this.props.getTransactions(1, 10, startDate, endDate)
+    this.props.getStatistics(startDate, endDate)
     this.setState({startDate, endDate, dateFilter})
+  }
+
+  shouldComponentUpdate(newProps, newState) {
+    const newStatistics = newProps.statistics.data != this.props.statistics.data
+    const newTransactions = newProps.transactions.list != this.props.transactions.list
+    return newStatistics || newTransactions
   }
 
   render() {
@@ -167,6 +176,7 @@ class TransactionsTable extends React.Component {
           <Select placeholder="Filter by" options={options} onChange={this.handleSelectChange}/>
         </div>
         <h1 className="title">Summary for this {this.state.dateFilter}.</h1>
+        <Statistics {...this.props}/>
         { table }
       </div>
     )
