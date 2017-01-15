@@ -1,21 +1,40 @@
 import React from 'react'
+import moment from 'moment'
 import NoteModal from 'components/NoteModal'
 import { formatNumber, zeroPad } from 'utils/currency'
+import { Select } from 'semantic-ui-react';
 
 class TransactionsTable extends React.Component {
 
-  componentDidMount() {
-    this.props.getTransactions()
+  constructor(props) {
+    super(props)
+
+    this.dateFilters = {
+      DAY: 'day',
+      MONTH: 'month',
+      YEAR: 'year',
+    }
+
+    // TODO: set as constants
+    const dateFormat = 'YYYY-MM-DD HH:mm:ss'
+    const dateFilter = this.dateFilters.DAY
+
+    const startDate = moment().startOf(dateFilter).format(dateFormat)
+    const endDate = moment().endOf(dateFilter).format(dateFormat)
+
+    this.state = {
+      dateFilter,
+      startDate,
+      endDate,
+    }
   }
 
-  componentWillReceiveProps(newProps, oldProps) {
-    const { createSuccess, updateSuccess, confirmSuccess, deleteSuccess } = newProps.transactions
+  componentDidMount() {
+    // TODO: add filter to show only confirmed transactions
 
-    if(createSuccess || updateSuccess || confirmSuccess || deleteSuccess) {
-      const { list } = newProps.transactions
-      const { currentPage } = list
-      this.props.getTransactions(currentPage)
-    }
+    const { startDate, endDate } = this.state
+
+    this.props.getTransactions(1, 10, startDate, endDate)
   }
 
   handlePageClick = (page) => {
@@ -35,13 +54,21 @@ class TransactionsTable extends React.Component {
 
   renderTable = () => {
     const { list, fetchingTransactions } = this.props.transactions
-    const { data, lastPage, currentPage } = list
+    const { data, lastPage, currentPage, total } = list
 
     if(fetchingTransactions) {
       return (
         <div className="ui loading blue segment">
           <p>Fetching transactions.</p>
           <p>Please wait.</p>
+        </div>
+      )
+    }
+
+    if(total < 1) {
+      return (
+        <div className="ui segment no-data">
+          <h1>No data for this {this.state.dateFilter}</h1>
         </div>
       )
     }
@@ -105,13 +132,35 @@ class TransactionsTable extends React.Component {
     )
   }
 
+  handleSelectChange = (event, target) => {
+    const dateFilter = this.dateFilters[target.value]
+
+    const dateFormat = 'YYYY-MM-DD HH:mm:ss'
+    const startDate = moment().startOf(dateFilter).format(dateFormat)
+    const endDate = moment().endOf(dateFilter).format(dateFormat)
+
+    this.props.getTransactions(1, 10, startDate, endDate)
+  }
+
   render() {
     const { list } = this.props.transactions
     const table = list ? this.renderTable() : null
 
+    const options = []
+
+    for ( let key in this.dateFilters ) {
+      options.push({
+        text: this.dateFilters[key],
+        value: key,
+      })
+    }
+
     return (
       <div className="transactions-table-wrapper">
         <NoteModal ref="noteModal" />
+        <div className="field">
+          <Select placeholder="Filter by" options={options} onChange={this.handleSelectChange}/>
+        </div>
         { table }
       </div>
     )

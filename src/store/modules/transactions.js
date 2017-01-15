@@ -42,15 +42,16 @@ export function getTransactionTypes() {
   }
 }
 
-export function getTransactions(page = 1, pageSize = 10) {
+export function getTransactions(page = 1, pageSize = 10, startDate, endDate) {
   return(dispatch, getState) => {
     const { auth: { token } } = getState();
 
     return dispatch({
       [CALL_API]: {
-        endpoint: `/api/transactions?page=${page}&pageSize=${pageSize}`,
+        endpoint: `/api/transactions?page=${page}&pageSize=${pageSize}&startDate=${startDate}&endDate=${endDate}`,
         method: 'GET',
         headers: {
+          'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
         types: [ GET_TXNS, GET_TXNS_SUCCESS, GET_TXNS_FAIL],
