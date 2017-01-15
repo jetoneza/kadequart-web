@@ -96,6 +96,7 @@ class TransactionsTable extends React.Component {
             <th>Type</th>
             <th>Notes</th>
             <th>Date Added</th>
+            <th className="center aligned">Status</th>
           </tr>
         </thead>
         <tbody>
@@ -115,6 +116,11 @@ class TransactionsTable extends React.Component {
                   {item.notes ? <a onClick={e => this.readNotes(item.notes)}>Read notes</a> : 'n/a'}
                 </td>
                 <td>{item.created_at}</td>
+                <td className="status center aligned">
+                  {item.confirmed ?
+                      <i className="icon checkmark green"></i> : 'Unconfirmed'
+                   }
+                </td>
               </tr>
             )
           })}
