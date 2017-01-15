@@ -5,6 +5,9 @@ export const Header = ({ location, logout, auth }) => (
   <div className="ui secondary fixed menu inverted main-header">
     <div className="ui container">
       <Link to="/" className="header item">KDQ</Link>
+      <div className="menu">
+        { (auth && auth.user)  && <Link to="/reports" className="ui item">Reports</Link> }
+      </div>
       <div className="right menu">
         { (auth && auth.user)  && <button onClick={e => logout()} className="ui item">Logout</button> }
         { location.pathname == '/' &&
