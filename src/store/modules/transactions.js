@@ -42,7 +42,7 @@ export function getTransactionTypes() {
   }
 }
 
-export function getTransactions(page = 1, pageSize = 10, startDate, endDate) {
+export function getTransactions(page = 1, pageSize = 50, startDate, endDate) {
   return(dispatch, getState) => {
     const { auth: { token } } = getState();
 
